@@ -1,36 +1,59 @@
+import 'package:byam_wallet/Sample.dart';
+import 'package:byam_wallet/app_style.dart';
+import 'package:byam_wallet/pages/list_users.dart';
+import 'package:byam_wallet/pages/user_detail.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 
 void main() {
-  runApp(const MyApp());
+  runApp(const MyMain());
 }
 
 final _routes = GoRouter(
   routes: [
     GoRoute(
       path: '/',
-      builder: (context, state) => const SplashScreen(),
+      builder: (context, state) => const ListUsers(),
     ),
+    // GoRoute(
+    //     path: '/login',
+    //     builder: (context, state) => const Login(),
+    //     routes: [
+    //       GoRoute(
+    //         path: 'otp',
+    //         builder: (context, state) => const EnterOTP(),
+    //       ),
+    //     ]),
     GoRoute(
-        path: '/login',
-        builder: (context, state) => const Login(),
+        path: '/users',
+        builder: (context, state) => const ListUsers(),
         routes: [
           GoRoute(
-            path: 'otp',
-            builder: (context, state) => const EnterOTP(),
-          ),
-        ]),
-    GoRoute(
-        path: '/home',
-        builder: (context, state) => const TabCon(),
-        routes: [
-          GoRoute(
-            path: 'pc',
-            builder: (context, state) => const ChatRoomPrivate(),
+            name: 'users/detail',
+            path: 'detail',
+            builder: (context, state) {
+              Sample spl = state.extra as Sample;
+              return UserDetail(name: spl);
+            },
           ),
         ]),
   ],
 );
+
+class MyMain extends StatelessWidget {
+  const MyMain({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return MaterialApp.router(
+      routerConfig: _routes,
+      title: 'Byam Wallet',
+      debugShowCheckedModeBanner: false,
+      theme: ThemeData(
+          appBarTheme: const AppBarTheme(backgroundColor: bgColorLight)),
+    );
+  }
+}
 
 class MyApp extends StatelessWidget {
   const MyApp({super.key});
